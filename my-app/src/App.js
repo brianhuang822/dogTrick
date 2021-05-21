@@ -1,4 +1,6 @@
 // import ReactDOM from 'react-dom'
+import {makeStyles} from '@material-ui/core/styles'
+import Slider from '@material-ui/core/Slider'
 import './App.css';
 
 function App() {
@@ -9,8 +11,7 @@ function App() {
       <h1 className="App-header">
         Difficulty
       </h1>
-	  <input type="range" min="0" max="3" className="Difficulty-Slider">
-	  </input>
+	  <Slider/>
 	  </div>
     </div>
   );
