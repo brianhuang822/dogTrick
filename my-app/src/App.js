@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import DifficultySlider from './components/DifficultySlider';
-// import './App.css';
+import TypeCheckboxes from './components/TypeCheckboxes';
 
 const styles = {
     root: {
@@ -12,10 +12,13 @@ const styles = {
     difficulty: {
         marginTop: 50
     },
-    appHeader: {
+    difficultyHeader: {
         display: 'flex',
         flexDirection: 'row',
         fontSize: 20
+    },
+    typeCheckboxes: {
+        marginTop: 40
     }
 };
 
@@ -25,8 +28,11 @@ function App(props) {
     return (
         <div className={classes.root}>
             <div className={classes.difficulty}>
-                <h1 className={classes.appHeader}>Difficulty</h1>
+                <h1 className={classes.difficultyHeader}>Difficulty</h1>
                 <DifficultySlider />
+            </div>
+            <div className={classes.typeCheckboxes}>
+                <TypeCheckboxes/>
             </div>
         </div>
     );

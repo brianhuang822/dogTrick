@@ -71,8 +71,7 @@ class DifficultySlider extends React.Component {
 }
 
 DifficultySlider.propTypes = {
-    classes: PropTypes.object,
-    startValue: PropTypes.number
+    classes: PropTypes.object
 };
 
 export default withStyles(styles)(DifficultySlider);
