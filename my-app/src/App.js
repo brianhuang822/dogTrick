@@ -1,20 +1,40 @@
-// import ReactDOM from "react-dom"
-import {makeStyles} from "@material-ui/core/styles"
-import Slider from "@material-ui/core/Slider"
-import "./App.css";
+import React from 'react';
+import {withStyles} from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import DifficultySlider from './components/DifficultySlider';
+// import './App.css';
 
-function App() {
-	document.title = "Dog Tricks"
+const styles = {
+  root: {
+    textAlign: 'left',
+    marginLeft: 100
+  },
+  difficulty: {
+    marginTop: 50
+  },
+  appHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    fontSize: 20
+  }
+};
+
+function App(props) {
+	document.title = 'Dog Tricks';
+  const {classes} = props;
   return (
-    <div className="App">
-      <div className="Difficulty">
-      <h1 className="App-header">
-        Difficulty
-      </h1>
-      <Slider/>
+    <div className={classes.root}>
+      <div className={classes.difficulty}>
+        <h1 className={classes.appHeader}>Difficulty</h1>
+        <DifficultySlider/>
       </div>
     </div>
   );
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object,
+};
+
+
+export default withStyles(styles)(App);
