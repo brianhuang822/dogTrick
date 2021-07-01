@@ -18,7 +18,7 @@ const styles = {
         fontSize: 20
     },
     typeCheckboxes: {
-        marginTop: 40
+        marginTop: 20
     }
 };
 

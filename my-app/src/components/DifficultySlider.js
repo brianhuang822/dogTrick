@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
+
 
 const styles = {
     root: {
@@ -11,67 +12,44 @@ const styles = {
         height: 10
     },
     markLabel: {
-        fontSize: '20px'
+        fontSize: '16px'
     }
 };
 
-class DifficultySlider extends React.Component {
+function DifficultySlider(props) {
+    
+    const [value, setValue] = useState(
+        localStorage.getItem('sliderValue') || 10
+    );
 
-    constructor(props){
-        super(props);
-        this.getSliderValue = this.getSliderValue.bind(this);
-        this.state = {
-            value: 0
-        };
-    }
-
-    componentDidMount(){
-        this.getSliderValue();
-    }
-    handleChange = (e, v) => {
-        localStorage.setItem('sliderValue', v);
-        this.setState({value: v});
-    }
-
-    getSliderValue(){
-        if (!localStorage.getItem('sliderValue')){
-            localStorage.setItem('sliderValue', 20);
-            this.setState({value: 20});
-        }
-        else{
-            this.setState({value: localStorage.getItem('sliderValue')});
-        }
-    }
-
-    marks = [
+    const marks = [
         { value: 0, label: 'Fundamentals' },
         { value: 10, label: 'Easy' },
         { value: 20, label: 'Medium' },
-        { value: 30, label: 'Hard' }
-    ];
+        { value: 30, label: 'Hard' }];
+    
+    React.useEffect(() => {
+        localStorage.setItem('sliderValue', value);
+    });
 
-    render() {
-        const { classes } = this.props;
-        return (
-            <Slider
-                classes={{
-                    root: classes.root,
-                    mark: classes.mark,
-                    markLabel: classes.markLabel
-                }}
-                value={this.state.value}
-                min={0}
-                step={10}
-                max={30}
-                marks={this.marks}
-                onChange={this.handleChange}
-            />
+    const { classes } = props;
+    
+    return (
+        <Slider
+        classes={{
+            root: classes.root,
+            mark: classes.mark,
+            markLabel: classes.markLabel
+        }}
+        min={0} step={10} max={30}
+        value={value} marks={marks}
+        onChange={(e, v) => setValue(v)}
+        />
         );
     }
-}
-
-DifficultySlider.propTypes = {
-    classes: PropTypes.object
-};
-
-export default withStyles(styles)(DifficultySlider);
+    
+    DifficultySlider.propTypes = {
+        classes: PropTypes.object
+    };
+    
+    export default withStyles(styles)(DifficultySlider);
