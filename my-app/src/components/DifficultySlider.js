@@ -6,7 +6,8 @@ import Slider from '@material-ui/core/Slider';
 
 const styles = {
     root: {
-        width: '40%'
+        width: '40%',
+        minWidth: 250
     },
     mark: {
         height: 10

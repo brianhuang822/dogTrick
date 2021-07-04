@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import DifficultySlider from './components/DifficultySlider';
 import TypeCheckboxes from './components/TypeCheckboxes';
+import AccordionPanels from './components/AccordionPanels';
 
 const styles = {
     root: {
@@ -19,6 +20,9 @@ const styles = {
     },
     typeCheckboxes: {
         marginTop: 20
+    },
+    AccordionPanels: {
+        marginTop: 40
     }
 };
 
@@ -34,6 +38,9 @@ function App(props) {
             <div className={classes.typeCheckboxes}>
                 <TypeCheckboxes/>
             </div>
+            <div className={classes.AccordionPanels}>
+                <AccordionPanels/>
+            </div>
         </div>
     );
 }
@@ -41,6 +48,5 @@ function App(props) {
 App.propTypes = {
     classes: PropTypes.object,
 };
-
 
 export default withStyles(styles)(App);

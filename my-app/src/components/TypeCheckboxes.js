@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = {
+    root:{
+        minWidth: 400
+    },
     first:{
 
     },
@@ -39,7 +42,7 @@ function TypeCheckboxes(props) {
     const { classes } = props;
 
     return (
-        <FormGroup aria-label="position" row>
+        <FormGroup className={classes.root} row>
             <FormControlLabel
                 control={<Checkbox
                     className={classes.first}
