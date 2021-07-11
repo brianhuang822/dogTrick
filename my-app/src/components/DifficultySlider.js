@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
@@ -18,10 +18,8 @@ const styles = {
 };
 
 function DifficultySlider(props) {
-    
-    const [value, setValue] = useState(
-        localStorage.getItem('sliderValue') || 10
-    );
+      
+    const { classes, value, setValue } = props;
 
     const marks = [
         { value: 0, label: 'Fundamentals' },
@@ -31,9 +29,8 @@ function DifficultySlider(props) {
     
     React.useEffect(() => {
         localStorage.setItem('sliderValue', value);
-    });
+    }, [value]);
 
-    const { classes } = props;
     
     return (
         <Slider
@@ -50,7 +47,10 @@ function DifficultySlider(props) {
     }
     
     DifficultySlider.propTypes = {
-        classes: PropTypes.object
+        classes: PropTypes.object,
+        value: PropTypes.number,
+        setValue: PropTypes.func
+
     };
     
     export default withStyles(styles)(DifficultySlider);

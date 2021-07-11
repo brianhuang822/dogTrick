@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -19,27 +19,23 @@ const styles = {
 
 function TypeCheckboxes(props) {
 
-    const [longValue, setLongValue] = useState(
-        localStorage.getItem('longValue') == 'true' || false
-    );
-    const [singleValue, setSingleValue] = useState(
-        localStorage.getItem('singleValue') == 'true' || false
-    );
-    const [startValue, setStartValue] = useState(
-        localStorage.getItem('startValue') == 'true' || false
-    );
-    const [endValue, setEndValue] = useState(
-        localStorage.getItem('endValue') == 'true' || false
-    );
+    const { classes, value, setValue } = props;
+
+    const onChange = (type, checkboxValue) => {
+        /*
+            Creates new dictionary since useEffect checks if newValue === value,
+            so it has to be a different object completely, not just a mutated
+            dictionary
+        */
+        const newValue = {...value};
+        newValue[type] = checkboxValue;
+        console.log(newValue[type]);
+        setValue(newValue);
+    };
 
     React.useEffect(() => {
-        localStorage.setItem('longValue', longValue);
-        localStorage.setItem('singleValue', singleValue);
-        localStorage.setItem('startValue', startValue);
-        localStorage.setItem('endValue', endValue);
-    });
-
-    const { classes } = props;
+        localStorage.setItem('typeValue', JSON.stringify(value));
+    }, [value]);
 
     return (
         <FormGroup className={classes.root} row>
@@ -47,37 +43,38 @@ function TypeCheckboxes(props) {
                 control={<Checkbox
                     className={classes.first}
                     color="primary" />}
-                label="Long" labelPlacement="end" checked={longValue}
-                onChange={ e => setLongValue(e.target.checked)}
+                label="Long" labelPlacement="end" checked={value['long']}
+                onChange={ e => onChange('long', e.target.checked)}
             />
             <FormControlLabel
                 control={<Checkbox
                     className={classes.next}
                     color="primary" />}
-                label="Single" labelPlacement="end" checked={singleValue}
-                onChange={ e => setSingleValue(e.target.checked)}
+                label="Single" labelPlacement="end" checked={value['single']}
+                onChange={ e => onChange('single', e.target.checked)}
             />
             <FormControlLabel
                 control={<Checkbox
                     className={classes.next}
                     color="primary" />}
-                label="Start" labelPlacement="end" checked={startValue}
-                onChange={ e => setStartValue(e.target.checked)}
+                label="Start" labelPlacement="end" checked={value['start']}
+                onChange={ e => onChange('start', e.target.checked)}
             />
             <FormControlLabel
                 control={<Checkbox
                     className={classes.next}
                     color="primary" />}
-                label="End" labelPlacement="end" checked={endValue}
-                onChange={ e => setEndValue(e.target.checked)
-                }
+                label="End" labelPlacement="end" checked={value['end']}
+                onChange={ e => onChange('end', e.target.checked)}
             />
         </FormGroup>
     );
 }
 
 TypeCheckboxes.propTypes = {
-    classes: PropTypes.object
+    classes: PropTypes.object,
+    value: PropTypes.object,
+    setValue: PropTypes.func
 };
 
 export default withStyles(styles)(TypeCheckboxes);

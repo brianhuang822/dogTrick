@@ -32,7 +32,7 @@ function AccordionPanels(props) {
     React.useEffect(() => {
         function updateValues() {
             localStorage.setItem('accordionValue', value);
-            setValue('http://www.doggiebuddy.com/topics/tricks/clicker.html');
+            setValue('about:blank');
         }
 
         window.onstorage = updateValues;
