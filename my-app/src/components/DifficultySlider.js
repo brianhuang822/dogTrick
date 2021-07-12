@@ -44,13 +44,12 @@ function DifficultySlider(props) {
         onChange={(e, v) => setValue(v)}
         />
         );
-    }
+}
     
-    DifficultySlider.propTypes = {
-        classes: PropTypes.object,
-        value: PropTypes.number,
-        setValue: PropTypes.func
-
-    };
+DifficultySlider.propTypes = {
+    classes: PropTypes.object,
+    value: PropTypes.number,
+    setValue: PropTypes.func
+};
     
     export default withStyles(styles)(DifficultySlider);

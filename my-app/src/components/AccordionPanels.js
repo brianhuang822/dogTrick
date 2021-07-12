@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -26,17 +26,12 @@ const styles = {
 };
 
 function AccordionPanels(props) {
-    const [value, setValue] = useState(0);
-    const {classes} = props;
+    const {classes, value, setValue} = props;
 
     React.useEffect(() => {
-        function updateValues() {
-            localStorage.setItem('accordionValue', value);
-            setValue('about:blank');
-        }
-
-        window.onstorage = updateValues;
-    });
+        setValue(value);
+        console.log(value);
+    }, []);
 
     return (
         <div className={classes.root}>
@@ -126,7 +121,8 @@ function AccordionPanels(props) {
 
 AccordionPanels.propTypes = {
     classes: PropTypes.object,
-    hi: PropTypes.string
+    value: PropTypes.object,
+    setValue: PropTypes.func
 };
 
 export default withStyles(styles)(AccordionPanels);
