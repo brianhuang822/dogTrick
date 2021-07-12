@@ -26,11 +26,18 @@ const styles = {
 };
 
 function AccordionPanels(props) {
-    const {classes, value, setValue} = props;
+    const {classes, value, setValue, settings} = props;
 
+    const sliderConverter = {0: 'FUNDAMENTALS', 10: 'EASY', 20: 'MEDIUM', 30: 'HARD'};
+
+    // Placeholder useEffect so eslint won't complain about unused variables
+    // This will be used eventually to update accordion contents
     React.useEffect(() => {
         setValue(value);
         console.log(value);
+        const convertedValue = settings['slider'];
+        console.log(convertedValue);
+        console.log(sliderConverter[convertedValue]);
     }, []);
 
     return (
@@ -122,7 +129,8 @@ function AccordionPanels(props) {
 AccordionPanels.propTypes = {
     classes: PropTypes.object,
     value: PropTypes.object,
-    setValue: PropTypes.func
+    setValue: PropTypes.func,
+    settings: PropTypes.object
 };
 
 export default withStyles(styles)(AccordionPanels);

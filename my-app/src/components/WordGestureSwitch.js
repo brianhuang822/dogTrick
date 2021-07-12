@@ -18,7 +18,6 @@ function WordGestureSwitch(props) {
         localStorage.setItem('switchValue', JSON.stringify(value));
     }, [value]);
 
-    
     return (
         <Grid component="label" container alignItems="center" spacing={1}>
             <Grid item>Show Word or Gesture</Grid>
@@ -35,7 +34,7 @@ function WordGestureSwitch(props) {
 
 WordGestureSwitch.propTypes = {
     classes: PropTypes.object,
-    value: PropTypes.object,
+    value: PropTypes.bool,
     setValue: PropTypes.func
 };
     

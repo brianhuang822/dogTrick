@@ -29,7 +29,6 @@ function TypeCheckboxes(props) {
         */
         const newValue = {...value};
         newValue[type] = checkboxValue;
-        console.log(newValue[type]);
         setValue(newValue);
     };
 

@@ -70,10 +70,10 @@ function App(props) {
 
     // State variable that will be used to get the values from the above settings, which
     // will be used as search parameters to find the correct 10 websites and data
-    // const [settingsValue, setSettingsValue] = LocalStorageState('searchValue',
-    //                                                         {'slider': 'fundamentals', 
-    //                                                         'type': [false, false, false, false],
-    //                                                         'switch': false});
+    const [settingsValue, setSettingsValue] = LocalStorageState('settingsValue',
+                                                            {'slider': 0, 
+                                                            'type': [false, false, false, false],
+                                                            'switch': false});
 
     // Creates an array that holds 10 placeholder htmls for the 10 accordion panels
     const initContentValue = [];
@@ -82,6 +82,20 @@ function App(props) {
     }
     // State variable for accordion panels
     const [accordionValue, setAccordionValue] = LocalStorageState('accordionValue', initContentValue);
+
+    React.useEffect(() => {
+        const newSettings = {'slider': sliderValue, 'switch': switchValue};
+        newSettings['type'] = [typeValue['long'], 
+                               typeValue['single'], 
+                               typeValue['start'], 
+                               typeValue['end']];
+        setSettingsValue(newSettings);
+
+    }, [sliderValue, typeValue, switchValue]);
+
+    React.useEffect(() => {
+        localStorage.setItem('settingsValue', JSON.stringify(settingsValue));
+    }, [settingsValue]);
 
     return (
         <div className={classes.root}>
@@ -97,7 +111,11 @@ function App(props) {
                 <WordGestureSwitch value={switchValue} setValue={setSwitchValue}/>
             </div>
             <div className={classes.AccordionPanels}>
-                <AccordionPanels value={accordionValue} setValue={setAccordionValue}/>
+                <AccordionPanels
+                    value={accordionValue} 
+                    setValue={setAccordionValue} 
+                    settings={settingsValue}
+                />
             </div>
         </div>
     );
