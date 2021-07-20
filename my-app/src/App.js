@@ -35,14 +35,17 @@ const styles = {
         marginTop: 30
     },
     accordionPanels: {
-        marginTop: 40,
+        marginTop: 50,
         width: '90%'
+    },
+    accordionExpanded: {
+
     },
     accordionHeading: {
 
     },
     accordionDetails:{
-        height: 'max(300, 20%)'
+        height: '40vh'
     },
     accordionWebsite: {
         width: '100%'
@@ -119,9 +122,9 @@ function App(props) {
             <div className={classes.wordGestureSwitch}>
                 <WordGestureSwitch value={switchValue} setValue={setSwitchValue}/>
             </div>
-            <div className={classes.AccordionPanels}>
+            <div className={classes.accordionPanels}>
                 {accordionValue.map((trick) => (
-                    <Accordion key={trick.gesture} classes={{expanded: classes.expanded}}>
+                    <Accordion key={trick.gesture} classes={{expanded: classes.accordionExpanded}}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography className={classes.accordionHeading}> 
                                 {trick.word}
