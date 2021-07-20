@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { types } from '../utils';
 
 const styles = {
     root:{
@@ -27,45 +28,24 @@ function TypeCheckboxes(props) {
             so it has to be a different object completely, not just a mutated
             dictionary
         */
-        const newValue = {...value};
-        newValue[type] = checkboxValue;
-        setValue(newValue);
+        setValue({...value, [type]: checkboxValue});
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         localStorage.setItem('typeValue', JSON.stringify(value));
     }, [value]);
 
     return (
         <FormGroup className={classes.root} row>
-            <FormControlLabel
-                control={<Checkbox
-                    className={classes.first}
-                    color="primary" />}
-                label="Long" labelPlacement="end" checked={value['long']}
-                onChange={ e => onChange('long', e.target.checked)}
-            />
-            <FormControlLabel
-                control={<Checkbox
-                    className={classes.next}
-                    color="primary" />}
-                label="Single" labelPlacement="end" checked={value['single']}
-                onChange={ e => onChange('single', e.target.checked)}
-            />
-            <FormControlLabel
-                control={<Checkbox
-                    className={classes.next}
-                    color="primary" />}
-                label="Start" labelPlacement="end" checked={value['start']}
-                onChange={ e => onChange('start', e.target.checked)}
-            />
-            <FormControlLabel
-                control={<Checkbox
-                    className={classes.next}
-                    color="primary" />}
-                label="End" labelPlacement="end" checked={value['end']}
-                onChange={ e => onChange('end', e.target.checked)}
-            />
+            {Object.values(types).map((typeLabel) => (
+                <FormControlLabel key={'checkbox' + typeLabel}
+                    control={<Checkbox
+                        className={classes.first}
+                        color="primary" />}
+                    label={typeLabel} labelPlacement="end" checked={value[typeLabel]}
+                    onChange={ e => onChange(typeLabel, e.target.checked)}
+                />
+            ))}
         </FormGroup>
     );
 }

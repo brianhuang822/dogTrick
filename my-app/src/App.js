@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { Typography } from '@material-ui/core';
+
 import DifficultySlider from './components/DifficultySlider';
 import TypeCheckboxes from './components/TypeCheckboxes';
 import WordGestureSwitch from './components/WordGestureSwitch';
-import AccordionPanels from './components/AccordionPanels';
+import { LocalStorageState, types, difficulty } from './utils';
 
 const styles = {
     root: {
         textAlign: 'left',
-        marginLeft: 100
+        marginLeft: 'max(60px, 10%)'
     },
     difficulty: {
         marginTop: 50
@@ -19,7 +25,7 @@ const styles = {
         fontSize: 20
     },
     typeCheckboxes: {
-        marginTop: 20
+        marginTop: 30
     },
     typeHeader: {
         marginTop: 30,
@@ -28,32 +34,20 @@ const styles = {
     wordGestureSwitch: {
         marginTop: 30
     },
-    AccordionPanels: {
-        marginTop: 40
+    accordionPanels: {
+        marginTop: 40,
+        width: '90%'
+    },
+    accordionHeading: {
+
+    },
+    accordionDetails:{
+        height: 'max(300, 20%)'
+    },
+    accordionWebsite: {
+        width: '100%'
     }
 };
-
-/**
- * This function checks if local storage already has the value
- * you want to use for your variable, and uses it as the initial value
- * if so. Otherwise, the initial value is supplied.
- * @param {string} storageKeyName 
- * @param {any} initialValue
- * @returns the state variable, and the function that changes the
- * state variable
- */
-function LocalStorageState(storageKeyName, initialValue){
-    if (localStorage.getItem(storageKeyName)){
-        const storageValue = JSON.parse(localStorage.getItem(storageKeyName));
-        const [value, setValue] = useState(storageValue);
-        return [value, setValue];
-    }
-    else{
-        const [value, setValue] = useState(initialValue);
-        localStorage.setItem(storageKeyName, JSON.stringify(value));
-        return [value, setValue];
-    }
-}
 
 function App(props) {
     document.title = 'Dog Tricks';
@@ -62,10 +56,10 @@ function App(props) {
     //State variables for slider, type checkboxes and switch
     const [sliderValue, setSliderValue] = LocalStorageState('sliderValue', 10);
     const [typeValue, setTypeValue] = LocalStorageState('typeValue',
-                                                        {'long': false, 
-                                                        'single': false, 
-                                                        'start': false, 
-                                                        'end': false});
+                                                        {'Long': false, 
+                                                        'Single': false, 
+                                                        'Start': false, 
+                                                        'End': false});
     const [switchValue, setSwitchValue] = LocalStorageState('switchValue', false);
 
     // State variable that will be used to get the values from the above settings, which
@@ -75,27 +69,42 @@ function App(props) {
                                                             'type': [false, false, false, false],
                                                             'switch': false});
 
-    // Creates an array that holds 10 placeholder htmls for the 10 accordion panels
+    // Creates an array that holds 10 placeholder tricks for the 10 accordion panels
     const initContentValue = [];
     for (let i = 0; i < 10; i++){
-        initContentValue.push('about:blank');
+        initContentValue.push({'link': 'about:blank', 
+                               'type': types.SINGLE,
+                               'difficulty': difficulty.FUNDAMENTALS,
+                               'word': 'wow',
+                               'gesture': 'wow' + i});
     }
     // State variable for accordion panels
     const [accordionValue, setAccordionValue] = LocalStorageState('accordionValue', initContentValue);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const newSettings = {'slider': sliderValue, 'switch': switchValue};
-        newSettings['type'] = [typeValue['long'], 
-                               typeValue['single'], 
-                               typeValue['start'], 
-                               typeValue['end']];
+        newSettings['type'] = Object.values(types).map((typeLabel) => 
+                                                       typeValue[typeLabel]);
         setSettingsValue(newSettings);
 
     }, [sliderValue, typeValue, switchValue]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         localStorage.setItem('settingsValue', JSON.stringify(settingsValue));
     }, [settingsValue]);
+
+    const sliderConverter = {0: difficulty.FUNDAMENTALS, 
+                             10: difficulty.EASY,
+                             20: difficulty.MEDIUM,
+                             30: difficulty.HARD};
+
+    useEffect(() => {
+        setAccordionValue(accordionValue);
+        console.log(accordionValue);
+        const convertedValue = settingsValue['slider'];
+        console.log(convertedValue);
+        console.log(sliderConverter[convertedValue]);
+    }, []);
 
     return (
         <div className={classes.root}>
@@ -111,11 +120,18 @@ function App(props) {
                 <WordGestureSwitch value={switchValue} setValue={setSwitchValue}/>
             </div>
             <div className={classes.AccordionPanels}>
-                <AccordionPanels
-                    value={accordionValue} 
-                    setValue={setAccordionValue} 
-                    settings={settingsValue}
-                />
+                {accordionValue.map((trick) => (
+                    <Accordion key={trick.gesture} classes={{expanded: classes.expanded}}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                            <Typography className={classes.accordionHeading}> 
+                                {trick.word}
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={classes.accordionDetails}>
+                            <iframe className={classes.accordionWebsite} src={trick.link}/>
+                        </AccordionDetails>
+                    </Accordion>
+                ))}
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
@@ -14,7 +14,7 @@ function WordGestureSwitch(props) {
       
     const { classes, value, setValue } = props;
 
-    React.useEffect(() => {
+    useEffect(() => {
         localStorage.setItem('switchValue', JSON.stringify(value));
     }, [value]);
 
